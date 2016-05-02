@@ -5,6 +5,30 @@ function greet(firstName) {
   return '<h1>Hello, ' + firstName + '!</h1>';
 }
 
+function op (operator, num1, num2) {
+  if (operator === "add"){
+    return num1 + num2;
+    }
+
+  else if (operator === "mult"){
+    return num1 * num2;
+    }
+
+  else if (operator === "div"){
+   return num1 / num2;
+    }
+
+  else if (operator === "sub"){
+    return num1 - num2;
+    }
+  
+  else {
+    return "error";
+  }
+}
+  
+
+
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
@@ -18,6 +42,21 @@ app.get('/hello/:name', function(request, response) {
   var result = greet(firstName);
   response.send(result);
 });
+
+app.get('/calculator', function(request, response) {
+  var operator = request.query.operation;
+  var num1 = parseInt(request.query.num1);
+  var num2 = parseInt(request.query.num2);
+  var total = op(operator, num1, num2);
+  if (total === "error") {
+    response.status(404).send('Incorrect operation. Please enter a valid operation');
+  }
+  else {
+    response.send({operator: operator, firstOperand : num1, secondOperand: num2, solution: total});
+  }
+});
+  
+
 
 /* YOU DON'T HAVE TO CHANGE ANYTHING BELOW THIS LINE :) */
 
